@@ -1,7 +1,8 @@
 // src/app/projects/[slug]/page.tsx
 import { notFound } from 'next/navigation';
-import { projects, Project } from '@/data/projects';
+import { projects } from '@/data/projects';
 import Image from 'next/image';
+import type { Project } from '@/data/projects';
 
 interface Params {
   params: {
@@ -16,7 +17,7 @@ export async function generateStaticParams() {
 }
 
 export default function ProjectPage({ params }: Params) {
-  const project = projects.find((p) => p.slug === params.slug);
+  const project: Project | undefined = projects.find((p) => p.slug === params.slug);
 
   if (!project) {
     notFound();
@@ -59,5 +60,5 @@ export default function ProjectPage({ params }: Params) {
         View source on GitHub
       </a>
     </main>
-);
+  );
 }
