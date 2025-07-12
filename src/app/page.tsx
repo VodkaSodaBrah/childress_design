@@ -1,7 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import { useEffect } from 'react';
 
 const GameScene = dynamic(() => import('@/components/GameScene'), { ssr: false });
@@ -42,7 +41,6 @@ export default function HomePage() {
           depth: true
         }}
       >
-        <OrbitControls />
         <GameScene />
       </Canvas>
     </div>

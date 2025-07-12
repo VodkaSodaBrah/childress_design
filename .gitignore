@@ -42,6 +42,6 @@ next-env.d.ts
 
 public/models
 
-AssetsAssets/f1_bahrain_lowpoly_circuit.glb
+Assets/f1_bahrain_lowpoly_circuit.glb
 Assets/rosendal_plains_2_4k.exr
 public/sounds/*.wav

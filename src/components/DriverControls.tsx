@@ -4,8 +4,8 @@ import { useFrame } from '@react-three/fiber';
 import * as CANNON from 'cannon-es';
 
 interface PhysicsDriverControlsProps {
-  vehicle: CANNON.RaycastVehicle;
-  chassisBody: CANNON.Body;
+  vehicle: CANNON.RaycastVehicle | null;
+  chassisBody: CANNON.Body | null;
 }
 
 export default function PhysicsDriverControls({ vehicle, chassisBody }: PhysicsDriverControlsProps) {

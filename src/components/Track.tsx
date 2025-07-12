@@ -5,6 +5,10 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { Group } from 'three';
 
+// Collision filter groups
+const CAR_GROUP = 1 << 0;
+const TRACK_GROUP = 1 << 1;
+
 interface TrackProps {
   world?: CANNON.World;
 }
@@ -42,31 +46,15 @@ const Track = forwardRef<Group, TrackProps>(({ world, ...props }, ref) => {
 
     // Add physics ground plane if world is provided
     if (world) {
-      // Create multiple collision bodies for better track representation
-      const trackSurface = new CANNON.Box(new CANNON.Vec3(25, 0.05, 25));
       const trackBody = new CANNON.Body({ mass: 0 });
-      trackBody.addShape(trackSurface);
-      trackBody.position.set(0, 0.1, 0); // Just above the visual track bottom
+      const trackShape = new CANNON.Box(new CANNON.Vec3(25, 0.1, 25));
+      trackBody.addShape(trackShape);
+      
+      // Position collision at the same level as visual track surface
+      trackBody.position.set(0, 0.05 + 0.1, 0); // 0.05 (track bottom) + 0.1 (half box height)
+      trackBody.collisionFilterGroup = TRACK_GROUP;
+      trackBody.collisionFilterMask = CAR_GROUP;
       world.addBody(trackBody);
-      
-      // Add additional collision bodies for track barriers/walls if needed
-      // This helps prevent the car from going off-track
-      const barrierHeight = 0.5;
-      const barrierThickness = 0.2;
-      
-      // Left barrier
-      const leftBarrier = new CANNON.Box(new CANNON.Vec3(barrierThickness, barrierHeight, 25));
-      const leftBarrierBody = new CANNON.Body({ mass: 0 });
-      leftBarrierBody.addShape(leftBarrier);
-      leftBarrierBody.position.set(-25, barrierHeight, 0);
-      world.addBody(leftBarrierBody);
-      
-      // Right barrier
-      const rightBarrier = new CANNON.Box(new CANNON.Vec3(barrierThickness, barrierHeight, 25));
-      const rightBarrierBody = new CANNON.Body({ mass: 0 });
-      rightBarrierBody.addShape(rightBarrier);
-      rightBarrierBody.position.set(25, barrierHeight, 0);
-      world.addBody(rightBarrierBody);
     }
 
     // Add to group
